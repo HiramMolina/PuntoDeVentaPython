@@ -38,15 +38,19 @@ def mostrarInventario():
     cursor.close()
     conexion.close()
 
-def mostrarInventarioo():
-    
-    print("\n")
-    print("Inventario de la tiendita:\n")
-    cursor.fetchall("SELECT * FROM inventario")
-    for fila in cursor:
-        print(fila)
+def agregarInventario():
+
+    nombreProducto = input("Nombre producto: ")
+    cantidadProducto = input("Cantidad: ")
+    costo = input("Precio: $")
+    try:
+        cursor.execute("INSERT INTO inventario (`nombreProducto`, `cantidadProducto`, `costo`) VALUES (%s, %s, %s)", (nombreProducto, cantidadProducto, costo))
+        conexion.commit()
+    # INSERT INTO `test`.`inventario` (`nombreProducto`, `cantidadProducto`, `costo`) VALUES ('pan', '111', '222');
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
     cursor.close()
     conexion.close()
 
-mostrarInventarioo()
+agregarInventario()
 
