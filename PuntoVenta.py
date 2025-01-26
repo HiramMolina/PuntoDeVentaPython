@@ -1,4 +1,5 @@
 import mysql.connector
+from tabulate import tabulate 
 
 # def conexion():
 #     try:
@@ -30,13 +31,20 @@ cursor = conexion.cursor()
 
 def mostrarInventario():
 
-    print("\n")
-    print("Inventario de la tiendita:\n")
+    print("\n" + "=" * 40)
+    print("             INVENTARIO")
+    print("=" * 40 + "\n")
+
     cursor.execute("SELECT * FROM inventario")
-    for fila in cursor:
-        print(fila)
+    filas = cursor.fetchall()
+
+    tabla = [[fila[0],fila[1],fila[2],fila[3]] for fila in filas]
+    print(tabulate(tabla, headers=["ID Producto", "Nombre del Producto", "Cantidad Producto", "Costo"], tablefmt="heavy_outline"))
+
     cursor.close()
     conexion.close()
+
+mostrarInventario()
 
 def agregarInventario():
 
@@ -52,5 +60,18 @@ def agregarInventario():
     cursor.close()
     conexion.close()
 
-agregarInventario()
+def eliminarInventario():
+    print("\n" + "=" * 40)
+    print("    ELIMINAR PRODUCTO DEL INVENTARIO")
+    print("=" * 40 + "\n")
 
+    # Consulta los datos de inventario
+    cursor.execute("SELECT `idProducto`, `nombreProducto` FROM inventario")
+    filas = cursor.fetchall()  # Obtener todos los registros
+    # Mostrar los datos en formato tabular
+    tabla = [ [fila[0], fila[1] ] for fila in filas]
+    print(tabulate(tabla, headers=["ID Producto", "Nombre del Producto"], tablefmt="heavy_outline"))
+    cursor.close()
+    conexion.close()
+
+# eliminarInventario()
